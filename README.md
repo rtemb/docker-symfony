@@ -53,6 +53,7 @@ Docker-symfony gives you everything you need for developing Symfony application.
         # Symfony3
         $ sf3 doctrine:database:create
         $ sf3 doctrine:schema:update --force
+        $ sf3 doctrine:migration:migrate
         # Only if you have `doctrine/doctrine-fixtures-bundle` installed
         $ sf3 doctrine:fixtures:load --no-interaction
         ```
@@ -130,6 +131,27 @@ $ docker rm $(docker ps -aq)
 $ docker rmi $(docker images -q)
 ```
 
+## Create databasse from dump .sql file
+
+1. Add to project's root your .sql file
+2. In docker-compose.yml, in db container add one more value of volumes tag
+    ```bash
+    - "./dump.sql:/var/dump.sql"
+    ```
+2. Go to db container
+
+    ```bash
+    docker-compose exec db mysql -uroot -p"root"
+    ```
+2. And create database. Then select created database
+    ```sql
+    CREATE DATABASE mydatabase;
+    USE mydatabase;
+    ```
+3. Finally run 
+    ```sql
+    SOURCE /var/dump.sql;
+    ```
 ## FAQ
 
 * Got this error: `ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
